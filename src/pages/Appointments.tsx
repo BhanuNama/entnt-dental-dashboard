@@ -13,6 +13,8 @@ import { Plus, Calendar, FileText, Upload, Trash2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 
+type AppointmentStatus = 'Scheduled' | 'Completed' | 'Cancelled' | 'Pending';
+
 export const Appointments: React.FC = () => {
   const { patients, incidents, addIncident, updateIncident, deleteIncident } = useAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,7 +28,7 @@ export const Appointments: React.FC = () => {
     appointmentDate: '',
     cost: '',
     treatment: '',
-    status: 'Scheduled' as const,
+    status: 'Scheduled' as AppointmentStatus,
     nextDate: ''
   });
 
@@ -198,7 +200,7 @@ export const Appointments: React.FC = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value: any) => setFormData({ ...formData, status: value })}>
+                  <Select value={formData.status} onValueChange={(value: AppointmentStatus) => setFormData({ ...formData, status: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
