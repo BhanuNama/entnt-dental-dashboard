@@ -30,12 +30,17 @@ const patientItems = [
 ];
 
 export function AppSidebar() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, patients } = useAuth();
   const { state } = useSidebar();
   const location = useLocation();
 
   const items = currentUser?.role === 'Admin' ? adminItems : patientItems;
   const isCollapsed = state === 'collapsed';
+
+  // Get patient data for patient users
+  const currentPatient = currentUser?.role === 'Patient' 
+    ? patients.find(p => p.id === currentUser.patientId)
+    : null;
 
   const getNavClass = ({ isActive }: { isActive: boolean }) =>
     `w-full justify-start transition-all duration-200 ${
@@ -96,7 +101,7 @@ export function AppSidebar() {
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate font-poppins">
-                {currentUser?.role === 'Admin' ? 'Dr. Admin' : patient?.name || 'Patient'}
+                {currentUser?.role === 'Admin' ? 'Dr. Admin' : currentPatient?.name || 'Patient'}
               </p>
               <p className="text-xs text-gray-500 truncate font-inter">{currentUser?.email}</p>
             </div>
